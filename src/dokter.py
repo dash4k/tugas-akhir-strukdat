@@ -1,1 +1,152 @@
-# Modul Class Manajemen Dokter
+from tabulate import tabulate
+import os
+
+class Node:
+    def __init__(self, nama, spesialis, jadwal):
+        self.nama = nama
+        self.spesialis = spesialis
+        self.jadwal = jadwal
+        self.prev = None
+        self.next = None
+
+class DokterList:
+    def __init__(self):
+        self.head = None
+        self.load_data()
+
+    def save_data(self):
+        with open('doctors_data.txt', 'w') as file:
+            current = self.head
+            while current:
+                file.write(f"{current.nama}|{current.spesialis}|{current.jadwal}\n")
+                current = current.next
+
+    def load_data(self):
+        if os.path.exists('doctors_data.txt'):
+            with open('doctors_data.txt', 'r') as file:
+                for line in file:
+                    nama, spesialis, jadwal = line.strip().split('|')
+                    self.tambah_dokter_dari_data(nama, spesialis, jadwal)
+
+    def tambah_dokter_dari_data(self, nama, spesialis, jadwal):
+        new_dokter = Node(nama, spesialis, jadwal)
+        if not self.head:
+            self.head = new_dokter
+        else:
+            current = self.head
+            while current.next:
+                current = current.next
+            current.next = new_dokter
+            new_dokter.prev = current
+
+    def tambah_dokter(self):
+        nama = input("Masukkan nama: ")
+        spesialis = input("Masukkan spesialis: ")
+        jadwal = input("Masukkan jadwal: ")
+        new_dokter = Node(nama, spesialis, jadwal)
+        if not self.head:
+            self.head = new_dokter
+        else:
+            current = self.head
+            while current.next:
+                current = current.next
+            current.next = new_dokter
+            new_dokter.prev = current
+        self.save_data()
+
+    def print_list(self):
+        current = self.head
+        if not current:
+            print("List dokter kosong.")
+            return
+
+        doctors = []
+        while current:
+            doctors.append([current.nama, current.spesialis, current.jadwal])
+            current = current.next
+        print(tabulate(doctors, headers=["Nama", "Spesialis", "Jadwal"], tablefmt="fancy_grid"))
+
+    def hapus_dokter(self, nama):
+        current = self.head
+        while current:
+            if current.nama == nama:
+                if current.prev:
+                    current.prev.next = current.next
+                if current.next:
+                    current.next.prev = current.prev
+                if current == self.head:  # If head needs to be removed
+                    self.head = current.next
+                print(f"Dokter {nama} berhasil dihapus.")
+                self.save_data()
+                return
+            current = current.next
+        print(f"Dokter {nama} tidak ditemukan.")
+
+    def cari_dokter(self, nama):
+        current = self.head
+        found = False
+        doctors = []
+        while current:
+            if nama.lower() in current.nama.lower():
+                doctors.append([current.nama, current.spesialis, current.jadwal])
+                found = True
+            current = current.next
+        if found:
+            print(tabulate(doctors, headers=["Nama", "Spesialis", "Jadwal"], tablefmt="fancy_grid"))
+        else:
+            print(f"Dokter dengan nama mengandung '{nama}' tidak ditemukan.")
+
+    def edit_dokter(self, nama):
+        current = self.head
+        while current:
+            if nama.lower() in current.nama.lower():
+                print(f"Ditemukan: Nama: {current.nama}, Spesialis: {current.spesialis}, Jadwal: {current.jadwal}")
+                print("Masukkan data baru (kosongkan jika tidak ingin mengubah):")
+                new_nama = input(f"Nama ({current.nama}): ")
+                new_spesialis = input(f"Spesialis ({current.spesialis}): ")
+                new_jadwal = input(f"Jadwal ({current.jadwal}): ")
+                if new_nama:
+                    current.nama = new_nama
+                if new_spesialis:
+                    current.spesialis = new_spesialis
+                if new_jadwal:
+                    current.jadwal = new_jadwal
+                print("Data dokter berhasil diperbarui.")
+                self.save_data()
+                return
+            current = current.next
+        print(f"Dokter dengan nama '{nama}' tidak ditemukan.")
+
+def main_menu():
+    list_dokter = DokterList()
+    while True:
+        print("\nMenu:")
+        print("1. Tambah dokter")
+        print("2. Tampilkan daftar dokter")
+        print("3. Cari dokter")
+        print("4. Hapus dokter")
+        print("5. Edit dokter")
+        print("6. Keluar")
+        choice = input("Pilih menu: ")
+
+        if choice == '1':
+            list_dokter.tambah_dokter()
+        elif choice == '2':
+            list_dokter.print_list()
+        elif choice == '3':
+            nama = input("Masukkan nama dokter yang dicari: ")
+            list_dokter.cari_dokter(nama)
+        elif choice == '4':
+            nama = input("Masukkan nama dokter yang akan dihapus: ")
+            list_dokter.hapus_dokter(nama)
+        elif choice == '5':
+            nama = input("Masukkan nama dokter yang akan diedit: ")
+            list_dokter.edit_dokter(nama)
+        elif choice == '6':
+            print("Keluar dari program.")
+            break
+        else:
+            print("Pilihan tidak valid. Silakan coba lagi.")
+
+if __name__ == "__main__":
+    main_menu()
