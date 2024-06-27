@@ -29,7 +29,7 @@ class DataAccount:
         if self.head is None:
             self.head = account
             account.next = self.head
-            account.pref = self.head
+            account.prev = self.head
             self.tail = self.head
             self.head.data = data
         else:

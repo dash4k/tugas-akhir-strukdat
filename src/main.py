@@ -199,7 +199,7 @@ while flag1:
                                     target_list = data.find(target.lower(), 1)
                                     if not target_list:
                                         input("\n\n404 Not Found!\n\nPress enter to continue........")
-                                        continue
+                                        break
                                     print(tabulate(target_list, headers=header_cari_pasien, tablefmt="fancy_grid"))
                                     print("\nContinue?")
                                     if true_false():
