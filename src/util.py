@@ -23,7 +23,6 @@ def true_false() -> bool:
     return True if choice in ["y", "Y"] else False
 
 
-
 def print_header(str: str):
     max_width = 86
     total_width = max_width + 4
