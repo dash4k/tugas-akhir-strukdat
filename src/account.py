@@ -1,6 +1,8 @@
 import pickle
 import os
 
+from appointment import Appointment
+
 
 class Account:
     def __init__(self, username, password, type: int) -> None:
@@ -76,27 +78,75 @@ class DataAccount:
     
     def list_dokter(self) -> list:
         doctors = []
+        found = False
         temp = self.head
         while temp:
             if temp.type == 2:
                 doctor_info = [temp.username, temp.data.nama, temp.data.spesialis, temp.data.jadwal]
                 doctors.append(doctor_info)
+                found = True
             temp = temp.next
             if temp == self.head:
                 break
-        return doctors
+        return doctors if found else False
     
     def list_pasien(self) -> list:
         patients = []
+        found = False
         temp = self.head
         while temp:
             if temp.type == 1:
                 patient_info = [temp.username, temp.data.nama, temp.data.alamat, temp.data.tipe_pembayaran, temp.data.umur]
                 patients.append(patient_info)
+                found = True
             temp = temp.next
             if temp == self.head:
                 break
-        return patients
+        return patients if found else False
+
+    def list_appointment(self, username) -> list:
+        appointment = []
+        temp = self.head
+        while temp:
+            if temp.username == username:
+                pointer = temp.data.appointment()
+                break
+            temp = temp.next
+            if temp == self.head:
+                return False
+        if pointer is None: 
+            return False
+        while pointer:
+            appointment_info = [pointer.username_pasien, pointer.nama_dijanji, pointer.waktu]
+            appointment.append(appointment_info)
+            pointer = pointer.next
+            if pointer == temp.data.appointment():
+                break
+        return appointment
+    
+    def return_data(self, username, type) -> list:
+        temp = self.head
+        while temp:
+            if temp.username == username:
+                if type == 1:
+                    return [temp.username, temp.data.nama, temp.data.alamat, temp.data.tipe_pembayaran, temp.data.umur]
+                elif type == 2:
+                    return [temp.username, temp.data.nama, temp.data.spesialis, temp.data.jadwal]
+            temp = temp.next
+            if temp == self.head:
+                break
+        return False
+    
+    def return_account(self, username):
+        temp = self.head
+        index = 0
+        while temp:
+            if temp.username == username:
+                return temp
+            temp = temp.next
+            index += 1
+            if temp == self.head:
+                return False
     
     def find(self, target, type) -> list:
         daftar_data = []
@@ -136,6 +186,98 @@ class DataAccount:
         temp.data.edit_data(target, changes.title())
         return True
     
+    def change_username(self, old_username, new_username, password) -> bool:
+        if old_username == new_username:
+            return False
+        temp = self.head
+        while temp:
+            if temp.username == old_username and temp.password == password:
+                break
+            temp = temp.next
+            if temp == self.head:
+                return False
+        temp.username = new_username
+        return True
+    
+    def change_password(self, username, new_password, old_password) -> bool:
+        temp = self.head
+        while temp:
+            if temp.username == username and temp.password == old_password:
+                break
+            temp = temp.next
+            if temp == self.head:
+                return False
+        temp.password = new_password
+        return True
+    
+    def enqueue_appointment(self, username_dokter, username_pasien, waktu) -> bool:
+        data_dokter = self.return_account(username_dokter)
+        data_pasien = self.return_account(username_pasien)
+        appointment_dokter = Appointment(data_dokter.username, data_pasien.username, data_pasien.data.nama, waktu)
+        appointment_pasien = Appointment(data_dokter.username, data_pasien.username, data_dokter.data.nama, waktu)
+        dokter_found = False
+        pasien_found = False
+        temp = self.head
+        while temp:
+            if temp.username == username_dokter:
+                if not temp.data.enqueue_appointment(appointment_dokter):
+                    return False
+                dokter_found = True
+            elif temp.username == username_pasien:
+                if not temp.data.enqueue_appointment(appointment_pasien):
+                    return False
+                pasien_found = True
+            temp = temp.next
+            if temp == self.head:
+                break
+        return True if (pasien_found and dokter_found) else False
+    
+    def dequeue_appointment(self, username_dokter, username_pasien) -> bool:
+        dokter_found = False
+        pasien_found = False
+        temp = self.head
+        while temp:
+            if temp.username == username_dokter:
+                if not temp.data.dequeue_appointment():
+                    return False
+                dokter_found = True
+            elif temp.username == username_pasien:
+                if not temp.data.dequeue_appointment():
+                    return False
+                pasien_found = True
+            temp = temp.next
+            if temp == self.head:
+                break
+        return True if (pasien_found and dokter_found) else False
+    
+    def cancel_appointment(self, username_dokter, username_pasien) -> bool:
+        dokter_found = False
+        pasien_found = False
+        temp = self.head
+        while temp:
+            if temp.username == username_dokter:
+                if not temp.data.cancel_appointment(username_pasien):
+                    return False
+                dokter_found = True
+            elif temp.username == username_pasien:
+                if not temp.data.cancel_appointment(username_dokter):
+                    return False
+                pasien_found = True
+            temp = temp.next
+            if temp == self.head:
+                break
+        return True if pasien_found and dokter_found else False
+    
+    def view_appointment(self, username) -> bool:
+        temp = self.head
+        while temp:
+            if temp.username == username:
+                return temp.data.appointment()
+            temp = temp.next
+            if temp == self.head:
+                break
+        return False
+
     def save_data(self):
         if self.head is None:
             return False
