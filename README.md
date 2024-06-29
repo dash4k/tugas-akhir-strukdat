@@ -63,8 +63,7 @@
 This project was made to fulfill the requirements of Struktur Data, a second semester course at Departement of Computer Science in Udayana University.
 
 There are six main features of this Contact App:
-* Adding Appointment
-* Canceling Appointment
+* Managing Appointment
 * Managing User Data
 * Managing User Account
 
