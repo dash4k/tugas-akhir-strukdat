@@ -125,7 +125,7 @@ Distributed under the The Unlicense License. See `LICENSE` for more information.
 
 Danishwara Pracheta: [@dash4k](https://www.github.com/dash4k)
 </br></br>
-Maliqy Numurti: [@Maliqytritata](https://github.com/Maliqytritata)
+Maliqy Tritata: [@Maliqytritata](https://github.com/Maliqytritata)
 </br>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
