@@ -6,8 +6,6 @@ class Dokter:
         self.nama = nama
         self.spesialis = spesialis
         self.jadwal = jadwal
-        self.max = 10
-        self.current = 0
         self.appointments_head = None
         self.appointments_tail = None
 

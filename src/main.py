@@ -3,6 +3,7 @@ from util import ask_int, clear, print_alert, print_header, print_jadwal, true_f
 from account import Account, DataAccount
 from pasien import Pasien
 from tabulate import tabulate
+from getpass import getpass
 
 
 header_akun_admin = ["Username", "Password", "Account Type"]
@@ -34,7 +35,7 @@ while flag1:
         clear()
         print_header("Log In")
         username = input("\nUsername: ")
-        password = input("Password: ")
+        password = getpass("Password: ")
         user_data = data.login(username, password)
         if not user_data:
             print_alert("Incorrect Username or Password!")
@@ -211,10 +212,11 @@ while flag1:
                             elif choice2 == 3:
                                 clear()
                                 print_header("Ubah Password")
-                                new_password = input("\nNew Password: ")
-                                old_password = input("\nOld Password: ")
+                                new_password = getpass("\nNew Password: ")
+                                confirm_new_password = getpass("\nConfirm New Password: ")
+                                old_password = getpass("\nOld Password: ")
                                 clear()
-                                if not data.change_password(user_data.username, new_password, old_password):
+                                if not data.change_password(user_data.username, new_password, old_password) or new_password != confirm_new_password:
                                     print_alert("Incorrect Password!")
                                     continue
                             elif choice2 == 4:
@@ -373,10 +375,11 @@ while flag1:
                             elif choice2 == 3:
                                 clear()
                                 print_header("Ubah Password")
-                                new_password = input("\nNew Password: ")
-                                old_password = input("\nOld Password: ")
+                                new_password = getpass("\nNew Password: ")
+                                confirm_new_password = getpass("\nConfirm New Password: ")
+                                old_password = getpass("\nOld Password: ")
                                 clear()
-                                if not data.change_password(user_data.username, new_password, old_password):
+                                if not data.change_password(user_data.username, new_password, old_password) or new_password != confirm_new_password:
                                     print_alert("Incorrect Password!")
                                     continue
                             elif choice2 == 4:
@@ -525,7 +528,7 @@ while flag1:
                                 clear()
                                 print_header("Doctor Sign Up Form")
                                 username = input("\nUsername: ")
-                                password = input("\nPassword: ")
+                                password = getpass("\nPassword: ")
                                 clear()
                                 print_header("Doctor Sign Up Form")
                                 nama = input("\nNama Lengkap: ").title()
@@ -651,7 +654,7 @@ while flag1:
                                 clear()
                                 print_header("Ubah Username")
                                 username = input("\nUsername: ")
-                                password = input("\nPassword: ")
+                                password = getpass("\nPassword: ")
                                 clear()
                                 if not data.change_username(user_data.username, username, password):
                                     print_alert("Incorrect Username or Password!")
@@ -659,10 +662,11 @@ while flag1:
                             elif choice2 == 3:
                                 clear()
                                 print_header("Ubah Password")
-                                new_password = input("\nNew Password: ")
-                                old_password = input("\nOld Password: ")
+                                new_password = getpass("\nNew Password: ")
+                                confirm_new_password = getpass("\nConfirm New Password: ")
+                                old_password = getpass("\nOld Password: ")
                                 clear()
-                                if not data.change_password(user_data.username, new_password, old_password):
+                                if not data.change_password(user_data.username, new_password, old_password) or new_password != confirm_new_password:
                                     print_alert("Incorrect Password!")
                                     continue
                             elif choice2 == 4:
@@ -673,7 +677,7 @@ while flag1:
         clear()
         print_header("Patient Sign Up Form")
         username = input("\nUsername: ")
-        password = input("\nPassword: ")
+        password = getpass("\nPassword: ")
         clear()
         print_header("Patient Sign Up Form")
         nama = input("\nNama Lengkap: ").title()
