@@ -114,7 +114,7 @@ To use the Contact App, simply follow the instruction written your terminal wind
 <!-- LICENSE -->
 ## License
 
-Distributed under the WTFPL License. See `LICENSE` for more information.
+Distributed under the The Unlicense License. See `LICENSE` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
