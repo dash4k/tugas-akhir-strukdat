@@ -105,7 +105,7 @@ Everything is written in python and the app is built with pyinstaller.
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-To use the Contact App, simply follow the instruction written your terminal window.
+To use the program, simply follow the instruction written your terminal window.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
