@@ -476,6 +476,9 @@ while flag1:
                                     clear()
                                     print_header("Data Pasien")
                                     target_list = data.list_pasien()
+                                    if not target_list:
+                                        print_alert("The List is Empty!")
+                                        continue
                                     print(tabulate(target_list, headers=header_manajemen_pasien, tablefmt="fancy_grid", showindex=True))
                                     input("\nPress Enter to Continue.......")
                                     continue
@@ -513,7 +516,7 @@ while flag1:
                             clear()
                             print("╔════════════════════════════════════════════════════════════════════════════════════════╗")
                             print("║                                                                                        ║")
-                            print("║                                      Manajemen Pasien                                  ║")
+                            print("║                                      Manajemen Dokter                                  ║")
                             print("║                                                                                        ║")
                             print("║                                 [1]   Tambah Data Dokter                               ║")
                             print("║                                 [2]   Edit Data Dokter                                 ║")
@@ -596,6 +599,9 @@ while flag1:
                                     clear()
                                     print_header("Data Dokter")
                                     target_list = data.list_dokter()
+                                    if not target_list:
+                                        print_alert("The List is Empty!")
+                                        continue
                                     print(tabulate(target_list, headers=header_manajemen_dokter, tablefmt="fancy_grid", showindex=True))
                                     input("\nPress Enter to Continue.......")
                                     continue
