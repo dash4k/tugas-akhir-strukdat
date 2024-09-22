@@ -85,11 +85,11 @@ Everything is written in python and the app is built with pyinstaller.
    ```sh
    pyinstaller main.py --onefile --windowed
    ```
-2. Go to the dist directory
+4. Go to the dist directory
    ```sh
    cd dist/
    ```
-4. Run tugasakhir
+5. Run tugasakhir
    ```sh
    ./main
    ```
